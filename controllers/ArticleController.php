@@ -26,6 +26,7 @@ class ArticleController
 
         $articleManager = new ArticleManager();
         $article = $articleManager->getArticleById($id);
+        $articleManager->incrementViews($id); // Incrémente le nombre de vues de l'article
         
         if (!$article) {
             throw new Exception("L'article demandé n'existe pas.");
