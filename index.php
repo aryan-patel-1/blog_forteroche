@@ -74,6 +74,17 @@ try {
             $adminController->deleteArticle();
             break;
 
+        // Route pour la page de monitoring
+        case 'monitoring':
+            $monitoringController = new MonitoringController();
+            $monitoringController->showMonitoring();
+            break;
+
+        case 'deleteComment':
+            $monitoringController = new MonitoringController();
+            $monitoringController->deleteComment(Utils::request('id', -1));
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

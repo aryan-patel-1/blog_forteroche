@@ -25,6 +25,7 @@
             <?php 
                 // Si on est connecté, on affiche le bouton de déconnexion, sinon, on affiche le bouton de connexion : 
                 if (isset($_SESSION['user'])) {
+                    echo '<a href="index.php?action=monitoring">Suivi</a>'; // Lien vers la page de monitoring
                     echo '<a href="index.php?action=disconnectUser">Déconnexion</a>';
                 }
                 ?>

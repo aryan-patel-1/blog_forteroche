@@ -47,9 +47,9 @@ class CommentManager extends AbstractEntityManager
     {
         $sql = "INSERT INTO comment (pseudo, content, id_article, date_creation) VALUES (:pseudo, :content, :idArticle, NOW())";
         $result = $this->db->query($sql, [
+            'idArticle' => $comment->getIdArticle(),
             'pseudo' => $comment->getPseudo(),
             'content' => $comment->getContent(),
-            'idArticle' => $comment->getIdArticle()
         ]);
         return $result->rowCount() > 0;
     }
@@ -64,6 +64,28 @@ class CommentManager extends AbstractEntityManager
         $sql = "DELETE FROM comment WHERE id = :id";
         $result = $this->db->query($sql, ['id' => $comment->getId()]);
         return $result->rowCount() > 0;
+    }
+
+    /**
+     * Récupère tous les commentaires
+     * @return array : un tableau d'objets Comment
+     */
+    public function getAllComments() : array
+    {
+        // Récupère tous les commentaires triés par date de création décroissante
+        $sql = "SELECT * FROM comment ORDER BY date_creation DESC";
+        // $result est un PDOStatement qui permet de parcourir les résultats
+        $result = $this->db->query($sql);
+        // tableau de commentaires
+        $comments = [];
+
+        // On parcourt les résultats et on crée un objet Comment pour chaque commentaire
+        while ($comment = $result->fetch()) {
+            // on ajoute l'objet Comment au tableau
+            $comments[] = new Comment($comment);
+        }
+    
+        return $comments;
     }
 
 }

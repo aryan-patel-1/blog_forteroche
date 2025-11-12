@@ -11,6 +11,18 @@ class Comment extends AbstractEntity
     private string $pseudo;
     private string $content;
     private DateTime $dateCreation;
+    private string $articleTitle; // titre de l'article associé au commentaire
+    
+    public function getArticleTitle(): string
+    {
+        return $this->articleTitle;
+    }
+
+    public function setArticleTitle(string $articleTitle): void
+    {
+        $this->articleTitle = $articleTitle;
+    }
+
     
     /**
      * Getter pour l'id de l'article.
