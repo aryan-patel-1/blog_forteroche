@@ -9,14 +9,35 @@ class ArticleManager extends AbstractEntityManager
      * Récupère tous les articles.
      * @return array : un tableau d'objets Article.
      */
-    public function getAllArticles() : array
+    public function getAllArticles(string $sort = 'date_creation', string $order = 'desc') : array
     {
-        $sql = "SELECT * FROM article";
+        $allowedSorts = ['title', 'views', 'date_creation', 'commentCount'];
+        if (!in_array($sort, $allowedSorts)) { // vérifie que le paramètre de tri est valide
+            $sort = 'date_creation';
+        }
+        // si le paramètre d'ordre est 'ASC', on le met en majuscule, sinon on met 'DESC'
+        if ($order === 'asc') {
+            $order = 'asc';
+        } else {
+            $order = 'desc';
+        }
+
+        $sql = "
+        SELECT article.*, COUNT(comment.id) AS commentCount
+        FROM article
+        LEFT JOIN comment ON comment.id_article = article.id
+        GROUP BY article.id
+        ORDER BY $sort $order
+        ";;
         $result = $this->db->query($sql);
         $articles = [];
-
-        while ($article = $result->fetch()) {
-            $articles[] = new Article($article);
+    
+        while ($articleData = $result->fetch()) {
+            // Création de l'objet ArticleData
+            $article = new Article($articleData);
+            // On ajoute le nombre de commentaires
+            $article->setCommentCount((int)$articleData['commentCount']);
+            $articles[] = $article;
         }
         return $articles;
     }

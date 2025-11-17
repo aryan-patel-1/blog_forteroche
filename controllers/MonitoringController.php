@@ -25,22 +25,69 @@ class MonitoringController
         }
     }
 
+        // Fonction pour alterner ASC/DESC par colonne
+        function nextOrder($column, $sort, $order) 
+        {
+            if ($column === $sort) {
+                // Si l'ordre actuel est 'asc', on passe à 'desc'
+                if ($order === 'asc') {
+                    return 'desc';
+                } else {
+                    return 'asc';
+                }
+            } else {
+            // Si ce n'est pas la colonne triée, on retourne 'asc' par défaut
+                return 'asc';
+            }
+        }
+        // Fonction pour afficher les flèches
+        function sortArrow($column, $sort, $order) {
+            if ($column !== $sort) {
+                return '⇅'; // colonne pas triée → ⇅
+            }
+            if ($order === 'asc') {
+                return '↑';
+            } else {
+                return '↓';
+            }
+        }
+
 
     // Affiche la page de monitoring avec le système de vues
 
     public function showMonitoring() : void
     {
         $this->checkIfUserIsConnected();
-
-        $articles = $this->articleManager->getAllArticles();
+    
+        // si order existe dans l'url on le récupère sinon on met desc par défaut
+        if (isset($_GET['order'])) {
+            $order = $_GET['order'];
+        } else {
+            $order = 'desc';
+        }
+    
+        // si sort existe dans l'url on le récupère sinon on met date_creation par défaut
+        if (isset($_GET['sort'])) {
+            $sort = $_GET['sort'];
+        } else {
+            $sort = 'date_creation';
+        }
+    
+        // récupère tous les articles triés selon les paramètres sort et order
+        $articles = $this->articleManager->getAllArticles($sort, $order);
+    
+        // récupère tous les commentaires
         $comments = $this->commentManager->getAllComments();
-
+    
         $view = new View("Monitoring");
         $view->render("monitoring", [
-            'articles' => $articles,
-            'comments' => $comments
+            'articles'=> $articles,
+            'comments'=> $comments,
+            'sort'=> $sort,
+            'order'=> $order,
         ]);
     }
+    
 
     // Supprime un commentaire par son ID
 

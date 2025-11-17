@@ -2,20 +2,62 @@
 
 <section>
     <h3>Articles</h3>
+
+    <?php
+    // Fonction pour alterner ASC/DESC par colonne
+    function nextOrder($column, $sort, $order) {
+        if ($column === $sort) {
+            // Si l'ordre actuel est 'asc', on passe à 'desc'
+            if ($order === 'asc') {
+                return 'desc';
+            } else {
+                return 'asc';
+            }
+        } else {
+        // Si ce n'est pas la colonne triée, on retourne 'asc' par défaut
+            return 'asc';
+        }
+    }
+    // Fonction pour afficher les flèche
+    function sortArrow($column, $sort, $order) {
+        if ($column !== $sort) {
+            return '⇅'; // colonne pas triée → ⇅
+        }
+        if ($order === 'asc') {
+            return '↑';
+        } else {
+            return '↓';
+        }
+    }
+    ?>
+
     <div class="adminArticle">
  
         <div class="articleLine header">
-            <div class="title">Titre</div>
-            <div class="title">Nombre de vues</div>
-            <div class="title">Date de publication</div>
-            <div class="title">Nombre de commentaires</div>
+            <div class="title">
+                <a href="index.php?action=monitoring&sort=title&order=<?= nextOrder('title', $sort, $order) ?>">
+                Titre <?= sortArrow('title', $sort, $order) ?></a>
+            </div>
+            <div class="title">
+                <a href="index.php?action=monitoring&sort=views&order=<?= nextOrder('views', $sort, $order) ?>">    
+                Nombre de vues <?= sortArrow('views', $sort, $order) ?></a>
+                </div>
+            <div class="title">
+                <a href="index.php?action=monitoring&sort=date_creation&order=<?= nextOrder('date_creation', $sort, $order) ?>">    
+                Date de publication <?= sortArrow('date_creation', $sort, $order) ?></a>
+            </div>
+            <div class="title">
+                <a href="index.php?action=monitoring&sort=commentCount&order=<?= nextOrder('commentCount', $sort, $order) ?>">
+                Nombre de commentaires <?= sortArrow('commentCount', $sort, $order) ?></a>
+            </div>
         </div>
 
         <?php foreach ($articles as $article) { ?>
             <div class="articleLine">
-                <div class="title"><?= htmlspecialchars($article->getTitle()) ?></div>
+                <div class="title"><?= $article->getTitle() ?></div>
                 <div class="title"><?= $article->getViews() ?></div>
                 <div class="title"><?= $article->getDateCreation()->format('d/m/Y') ?></div>
+                <div class="title"><?= $article->getCommentCount() ?></div>
             </div>
         <?php } ?>
     </div>
@@ -35,7 +77,7 @@
 
         <?php foreach ($comments as $comment) { ?>
             <div class="articleLine">
-                <div class="title"><?= $comment->getIdArticle() ?></div>
+                <div class="title"><?= $comment->getArticleTitle() ?></div>
                 <div class="title"><?= htmlspecialchars($comment->getPseudo()) ?></div>
                 <div class="title"><?= htmlspecialchars($comment->getContent()) ?></div>
                 <div class="title"><?= $comment->getDateCreation()->format('d/m/Y') ?></div>

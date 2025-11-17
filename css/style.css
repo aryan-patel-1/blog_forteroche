@@ -21,6 +21,7 @@
     --quoteColor: #c5cbe4;
     --commentPaleColor: #99a140;
     --commentColor: #255E33;
+    --commentMediumColor: #317846;
 }
 
 /**
@@ -349,4 +350,16 @@ footer {
     padding: 20px;
     color: white;
     background-color: var(--headerColor);
+}
+
+.adminArticle .articleLine:nth-of-type(odd) {
+    background-color: var(--commentMediumColor);
+}
+
+.adminArticle .articleLine:nth-of-type(even) {
+    background-color: var(--commentPaleColor);
+}
+
+.articleLine.header a:hover {
+    text-decoration: underline;
 }

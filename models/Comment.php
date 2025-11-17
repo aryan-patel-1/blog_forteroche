@@ -11,7 +11,7 @@ class Comment extends AbstractEntity
     private string $pseudo;
     private string $content;
     private DateTime $dateCreation;
-    private string $articleTitle; // titre de l'article associé au commentaire
+    private string $articleTitle ;
     
     public function getArticleTitle(): string
     {
@@ -23,7 +23,7 @@ class Comment extends AbstractEntity
         $this->articleTitle = $articleTitle;
     }
 
-    
+
     /**
      * Getter pour l'id de l'article.
      * @return int

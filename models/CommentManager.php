@@ -73,7 +73,12 @@ class CommentManager extends AbstractEntityManager
     public function getAllComments() : array
     {
         // Récupère tous les commentaires triés par date de création décroissante
-        $sql = "SELECT * FROM comment ORDER BY date_creation DESC";
+        $sql = "
+        SELECT comment.*, article.title AS articleTitle
+        FROM comment 
+        INNER JOIN article ON comment.id_article
+        ORDER BY comment.date_creation DESC
+        ";
         // $result est un PDOStatement qui permet de parcourir les résultats
         $result = $this->db->query($sql);
         // tableau de commentaires
@@ -83,6 +88,7 @@ class CommentManager extends AbstractEntityManager
         while ($comment = $result->fetch()) {
             // on ajoute l'objet Comment au tableau
             $comments[] = new Comment($comment);
+
         }
     
         return $comments;

@@ -12,6 +12,7 @@
     private ?DateTime $dateCreation = null;
     private ?DateTime $dateUpdate = null;
     private int $views;
+    private int $commentCount = 0;
 
     /**
      * Setter pour l'id de l'utilisateur. 
@@ -139,4 +140,14 @@
     {
         $this->views = $views;
     }
- }
+    // Getter et setter pour le nombre de commentaires@
+    public function getCommentCount(): int
+    {
+        return $this->commentCount;
+    }
+
+    public function setCommentCount(int $count): void
+    {
+        $this->commentCount = $count;
+    }
+}
