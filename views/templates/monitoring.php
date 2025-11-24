@@ -3,52 +3,24 @@
 <section>
     <h3>Articles</h3>
 
-    <?php
-    // Fonction pour alterner ASC/DESC par colonne
-    function nextOrder($column, $sort, $order) {
-        if ($column === $sort) {
-            // Si l'ordre actuel est 'asc', on passe à 'desc'
-            if ($order === 'asc') {
-                return 'desc';
-            } else {
-                return 'asc';
-            }
-        } else {
-        // Si ce n'est pas la colonne triée, on retourne 'asc' par défaut
-            return 'asc';
-        }
-    }
-    // Fonction pour afficher les flèche
-    function sortArrow($column, $sort, $order) {
-        if ($column !== $sort) {
-            return '⇅'; // colonne pas triée → ⇅
-        }
-        if ($order === 'asc') {
-            return '↑';
-        } else {
-            return '↓';
-        }
-    }
-    ?>
-
     <div class="adminArticle">
- 
+
         <div class="articleLine header">
             <div class="title">
-                <a href="index.php?action=monitoring&sort=title&order=<?= nextOrder('title', $sort, $order) ?>">
-                Titre <?= sortArrow('title', $sort, $order) ?></a>
+                <a href="index.php?action=monitoring&sort=title&order=<?= Sort::nextOrder('title', $sort ?? '', $order ?? '') ?>">
+                Titre <?= Sort::sortArrow('title', $sort ?? '', $order ?? '') ?></a>
             </div>
             <div class="title">
-                <a href="index.php?action=monitoring&sort=views&order=<?= nextOrder('views', $sort, $order) ?>">    
-                Nombre de vues <?= sortArrow('views', $sort, $order) ?></a>
-                </div>
-            <div class="title">
-                <a href="index.php?action=monitoring&sort=date_creation&order=<?= nextOrder('date_creation', $sort, $order) ?>">    
-                Date de publication <?= sortArrow('date_creation', $sort, $order) ?></a>
+                <a href="index.php?action=monitoring&sort=views&order=<?= Sort::nextOrder('views', $sort ?? '', $order ?? '') ?>">    
+                Nombre de vues <?= Sort::sortArrow('views', $sort ?? '', $order ?? '') ?></a>
             </div>
             <div class="title">
-                <a href="index.php?action=monitoring&sort=commentCount&order=<?= nextOrder('commentCount', $sort, $order) ?>">
-                Nombre de commentaires <?= sortArrow('commentCount', $sort, $order) ?></a>
+                <a href="index.php?action=monitoring&sort=date_creation&order=<?= Sort::nextOrder('date_creation', $sort ?? '', $order ?? '') ?>">    
+                Date de publication <?= Sort::sortArrow('date_creation', $sort ?? '', $order ?? '') ?></a>
+            </div>
+            <div class="title">
+                <a href="index.php?action=monitoring&sort=commentCount&order=<?= Sort::nextOrder('commentCount', $sort ?? '', $order ?? '') ?>">
+                Nombre de commentaires <?= Sort::sortArrow('commentCount', $sort ?? '', $order ?? '') ?></a>
             </div>
         </div>
 
@@ -73,7 +45,6 @@
             <div class="title">Date</div>
             <div class="title">Action</div>
         </div>
-
 
         <?php foreach ($comments as $comment) { ?>
             <div class="articleLine">
